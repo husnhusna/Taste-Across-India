@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taste Across India - A Handcrafted Cooking & Mukbang Game</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Master Game Frame -->
+  <main id="game-app">
+
+    <!-- =========================================================
+         SCREEN 1: TITLE / PROLOGUE
+         ========================================================= -->
+    <section id="screen-title" class="game-screen active">
+      <div class="title-header">
+        <div class="title-prelude">Traditional Regional Indian Cooking</div>
+        <h1 class="main-title">Taste Across India</h1>
+        <p class="subtitle">Step into cozy heritage kitchens, prepare honest family recipes, and share meals with your companion.</p>
+      </div>
+
+      <div class="title-mascots-showcase">
+        <div class="mascot-frame">
+          <div id="title-tara-slot"></div>
+          <div class="mascot-title-label">Tara</div>
+          <div class="mascot-role-label">Your Cooking Companion</div>
+        </div>
+
+        <div class="mascot-frame">
+          <div id="title-chintu-slot"></div>
+          <div class="mascot-title-label">Chintu</div>
+          <div class="mascot-role-label">Food Lover & Breakfast Friend</div>
+        </div>
+      </div>
+
+      <div class="title-actions">
+        <button id="btn-title-play" class="btn-leaf">
+          <span>🍳</span> Step into the Kitchen
+        </button>
+        <div class="title-sub-row">
+          <button id="btn-title-book" class="btn-wood">
+            <span>📖</span> Recipe Folio (20 Dishes)
+          </button>
+          <button id="btn-title-help" class="btn-wood">
+            <span>📜</span> Kitchen Guide
+          </button>
+          <button id="btn-title-settings" class="btn-wood">
+            <span>⚙️</span> Settings
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 2: STATE SELECTION MAP (FOLIO ATLAS)
+         ========================================================= -->
+    <section id="screen-map" class="game-screen">
+      <header class="app-header">
+        <div class="header-left">
+          <button id="btn-map-back" class="btn-brass-icon" title="Return to Title">
+            <span>🏠</span>
+          </button>
+          <div class="header-title-box">
+            <div class="header-title">Regional State Atlas</div>
+            <span class="header-badge">Select a regional kitchen to explore</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <div class="coin-pouch">
+            <span>🪙</span> <span id="map-coin-display">0</span>
+          </div>
+          <button id="btn-map-book" class="btn-wood" style="padding: 6px 14px; font-size: 0.88rem;">
+            <span>📖</span> Recipe Folio
+          </button>
+          <button id="btn-map-settings" class="btn-brass-icon" title="Settings">
+            <span>⚙️</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="map-content">
+        <div class="map-intro">
+          <h2>Select a Regional Kitchen</h2>
+          <p>Cook family recipes in each region to earn gold coins and open new regional kitchens.</p>
+        </div>
+
+        <div id="states-grid-container" class="states-grid">
+          <!-- Populated from STATES_DATA -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SCREEN 3: CONTINUOUS KITCHEN GAME SCENE
+         ========================================================= -->
+    <section id="screen-kitchen" class="game-screen">
+      <!-- Minimalist Header Bar -->
+      <header class="app-header">
+        <div class="header-left">
+          <button id="btn-kitchen-back" class="btn-brass-icon" title="Return to Map">
+            <span>⬅️</span>
+          </button>
+          <div class="header-title-box">
+            <div id="kitchen-dish-name" class="header-title">Puttu & Kadala Curry</div>
+            <span id="kitchen-state-tag" class="header-badge">Kerala</span>
+          </div>
+        </div>
+
+        <!-- Subtle Progress Indicator in Center -->
+        <div class="header-center">
+          <div id="step-dots-container" class="step-dots" title="Cooking Progress">
+            <!-- 8 Subtle Ink Progress Dots -->
+          </div>
+        </div>
+
+        <!-- Essential Quick Controls on Right -->
+        <div class="header-right">
+          <div class="coin-pouch" title="Gold Coins">
+            <span>🪙</span> <span id="kitchen-coin-display">0</span>
+          </div>
+          <button id="btn-kitchen-hint" class="btn-brass-icon" title="Quick Hint (💡)">
+            <span>💡</span>
+          </button>
+          <button id="btn-kitchen-restart" class="btn-brass-icon" title="Restart Recipe (🔄)">
+            <span>🔄</span>
+          </button>
+          <button id="btn-kitchen-help" class="btn-brass-icon" title="Cooking Guide & Safety (❓)">
+            <span>❓</span>
+          </button>
+          <button id="btn-kitchen-sound" class="btn-brass-icon" title="Toggle Sound (🔊)">
+            <span id="sound-icon-display">🔊</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Continuous Illustrated Kitchen Stage -->
+      <div id="cooking-stage" class="cooking-stage">
+        <!-- Background Room Layer -->
+        <div id="stage-room-bg" class="stage-room-bg"></div>
+
+        <!-- Real-time Interactive Game Canvas for Mouse Gameplay -->
+        <canvas id="cooking-canvas" width="960" height="480"></canvas>
+
+        <!-- Minimal Action Prompt Pill: 2-4 Words ("Pour the flour", "Stir in circles") -->
+        <div id="action-prompt-pill" class="action-prompt-pill">
+          <span id="action-prompt-text">Pour the flour</span>
+        </div>
+
+        <!-- Foreground Interactive Overlay Area (For Recap Card Only) -->
+        <div id="stage-interactive-area" class="stage-interactive-area"></div>
+
+        <!-- Subtle Helper Indicator -->
+        <div id="guide-pointer" class="guide-pointer">
+          <div class="pointer-badge" id="pointer-text">Drag here 👇</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         ARTISAN MODALS
+         ========================================================= -->
+
+    <!-- 1. Recipe Folio Modal (20 Dishes) -->
+    <div id="modal-recipe-book" class="modal-backdrop">
+      <div class="modal-sheet">
+        <div class="modal-header">
+          <div class="modal-title">
+            <span>📖</span> Recipe Folio (20 Regional Dishes)
+          </div>
+          <button class="modal-close-btn" data-close="modal-recipe-book">✕</button>
+        </div>
+        <div id="recipe-book-content" class="modal-content-scroll">
+          <!-- Injected from STATES_DATA -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Cooking Guide & Safety Modal -->
+    <div id="modal-help" class="modal-backdrop">
+      <div class="modal-sheet">
+        <div class="modal-header">
+          <div class="modal-title">
+            <span>📜</span> Cooking Guide & Hearth Safety
+          </div>
+          <button class="modal-close-btn" data-close="modal-help">✕</button>
+        </div>
+        <div class="modal-content-scroll">
+          <div class="folklore-box">
+            <strong>🔥 Hearth & Steam Safety:</strong>
+            <p>Boiling kettles and steamers reach over 100°C. In home cooking, never lift hot metal cookware bare-handed; always use folded kitchen towels or tongs, and cook with adult guidance.</p>
+          </div>
+
+          <h4 style="font-family: var(--font-display); color: #4a2818; margin-top: 6px;">How to Cook:</h4>
+          <ul style="padding-left: 20px; line-height: 1.6; font-size: 0.88rem; color: #432e21;">
+            <li><strong>Cook with Tara:</strong> She shares her family's cooking notes at every step.</li>
+            <li><strong>Tactile Interactions:</strong> Select ingredients from the pantry, sprinkle water into the brass bowl, alternate coconut and rice in the steamer cylinder, and plate on banana leaf.</li>
+            <li><strong>Breakfast Mukbang:</strong> Click the warm food on the leaf to share bites with Chintu and watch his natural reactions.</li>
+            <li><strong>Beginner Pointer:</strong> An indicator points to the next step if you're ever wondering what to do.</li>
+          </ul>
+
+          <h4 style="font-family: var(--font-display); color: #4a2818; margin-top: 8px;">Kitchen Vocabulary:</h4>
+          <div id="help-glossary-list" style="display: flex; flex-direction: column; gap: 8px;">
+            <!-- Injected from COOKING_GLOSSARY -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. Glossary Term Modal -->
+    <div id="modal-glossary" class="modal-backdrop">
+      <div class="modal-sheet" style="max-width: 420px;">
+        <div class="modal-header">
+          <div id="glossary-term-title" class="modal-title">Term</div>
+          <button class="modal-close-btn" data-close="modal-glossary">✕</button>
+        </div>
+        <div class="modal-content-scroll">
+          <p id="glossary-term-desc" style="font-size: 0.95rem; line-height: 1.5; color: #3b2012;"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. Settings Modal -->
+    <div id="modal-settings" class="modal-backdrop">
+      <div class="modal-sheet" style="max-width: 460px;">
+        <div class="modal-header">
+          <div class="modal-title">
+            <span>⚙️</span> Settings
+          </div>
+          <button class="modal-close-btn" data-close="modal-settings">✕</button>
+        </div>
+        <div class="modal-content-scroll">
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-title">Cooking & Eating Sounds</span>
+              <span class="setting-desc">Whisking, water drops, and soft eating sounds</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="setting-sound-toggle" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-title">Acoustic Melody</span>
+              <span class="setting-desc">Gentle background marimba chords</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="setting-music-toggle">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="setting-row">
+            <div class="setting-info">
+              <span class="setting-title">Helper Pointer</span>
+              <span class="setting-desc">Shows gentle guide indicator for each step</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="setting-tutorial-toggle" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div style="margin-top: 10px; text-align: center;">
+            <button id="btn-reset-data" class="btn-wood" style="background: #9d4b44; border-color: var(--ink);">
+              <span>🗑️</span> Reset Cooking Progress
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Unlock State Confirmation -->
+    <div id="modal-unlock" class="modal-backdrop">
+      <div class="modal-sheet" style="max-width: 420px;">
+        <div class="modal-header">
+          <div class="modal-title">
+            <span>🔓</span> Unlock Region
+          </div>
+          <button class="modal-close-btn" data-close="modal-unlock">✕</button>
+        </div>
+        <div class="modal-content-scroll">
+          <p id="unlock-body-text" style="font-size: 0.9rem; color: #432e21; line-height: 1.45; margin: 0 0 6px 0;"></p>
+          <div id="unlock-balance-line" style="font-size: 0.82rem; color: #7a6a5c; margin-bottom: 10px;"></div>
+          <div class="stage-action-bar" style="display: flex; gap: 10px; justify-content: center;">
+            <button id="btn-unlock-confirm" class="btn-leaf"><span>🪙</span> Unlock</button>
+            <button id="btn-unlock-cancel" class="btn-wood"><span>✕</span> Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Floating Hint Toast -->
+    <div id="hint-toast" class="hint-toast">
+      <span id="hint-toast-text">Here is a gentle hint for you.</span>
+    </div>
+
+  </main>
+
+  <!-- JavaScript Modules -->
+  <script src="js/audio.js"></script>
+  <script src="js/art.js"></script>
+  <script src="js/data/recipes.js"></script>
+  <script src="js/data/recipes-extra.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
